@@ -1,0 +1,18 @@
+<template>
+    <div>
+        <lightning-input type="date" label="Enter Birthdate" onchange={handleBirthdateChange}></lightning-input>
+    </div>
+    <template if:true={contacts.data}>
+        <ul>
+            <template for:each={contacts.data} for:item="contact">
+                <li key={contact.Id}>
+                    {contact.FirstName} {contact.LastName} - {contact.Birthdate}
+                </li>
+            </template>
+            <template if:true={contacts.error}>
+                <p>Error retrieving contacts:  </p>
+            </template>
+        </ul>
+    </template>
+
+</template>

@@ -1,0 +1,14 @@
+<template>
+    <lightning-card  variant="Narrow"  title="Data Binding using getter expression" icon-name="standard:account">
+        <lightning-button-icon  icon-name="utility:down" variant="border-filled" alternative-text="Show More" slot="actions"></lightning-button-icon>
+        <p class="slds-p-horizontal_small">Hello, {upperCaseName}!</p>
+        <p slot="footer">Card Footer</p>
+    </lightning-card>
+    <div class="slds-p-around_medium lgc-bg">
+        <lightning-input type="text" label="First name" name="firstName" onchange={handleChange}></lightning-input>
+    </div>
+    <br>
+    <div class="slds-p-around_medium lgc-bg">
+        <lightning-input type="text" label="Last name" name="lastName" onchange={handleChange}></lightning-input>
+    </div>
+</template>

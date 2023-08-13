@@ -1,0 +1,70 @@
+<template>
+    
+    <div class="slds-box">
+        <div if:true={showValidationError} class="slds-text-align_center slds-text-color_error" style="background-color: #f7f3f3; padding: 10px;">Please select only two flats.</div>
+    <div if:true={showMergeValidationError} class="slds-text-align_center slds-text-color_error" style="background-color: #eae6e6; padding: 10px;">Select only Adjacent Flat.</div>
+
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Sqrt area">Select available flat</div>
+                    </th>
+                   
+                    <th scope="col">
+                        <div class="slds-truncate" title="Product Code">Flat Number</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Location">Location</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Building">Building</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Block">Block</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Facing">Facing</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Floor">Floor</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Adjacent Flat">Adjacent Flat Number</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Sqrt area">Sqrt area</div>
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={wiredProduct2.data} for:item="acc">
+                    <tr key={acc.Id}>
+                        <td>
+                            <lightning-input type="checkbox" name="recordCheckbox" value={acc.Id}
+                                onchange={handleCheckboxChange} ></lightning-input>
+
+                        </td>
+                        
+                       
+                        <td data-label="Product Code">{acc.ProductCode}</td>
+                        <td data-label="Location">{acc.Locations__c}</td>
+                        <td data-label="Building">{acc.Building__c}</td>
+                        <td data-label="Block">{acc.Block__c}</td>
+                        <td data-label="Facing">{acc.Facing__c}</td>
+                        <td data-label="Floor">{acc.Floor__c}</td>
+                        <td data-label="Adjacent Flat">{acc.Adjacent_Flat_Number__c}</td>
+                        <td data-label="Sqrt Area">{acc.Sqrt__c}</td>
+                    </tr>
+                    
+                </template>
+            </tbody>
+        </table>
+    </div>
+    <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+    
+    <lightning-button label="Merge" variant="brand" onclick={handleNextPage} disabled={isButtonDisabled} ></lightning-button><lightning-helptext content="Seelct  atleast 2 flats to merge"></lightning-helptext>
+    <lightning-button label="Next" variant="brand" onclick={handlenextPage}></lightning-button><lightning-helptext content="Seelct  atleast 1 flats to merge"></lightning-helptext>
+
+</template>

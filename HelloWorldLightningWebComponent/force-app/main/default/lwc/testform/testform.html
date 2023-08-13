@@ -1,0 +1,22 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-quick-action-panel header="Flat details">
+        <lightning-record-edit-form record-id={recordId}
+                                    object-api-name={objectApiName}
+                                    onsuccess={handleSuccess}>
+            <lightning-output-field field-name="Name"></lightning-output-field>
+            <lightning-input-field field-name="StageName" ></lightning-input-field>
+
+<lightning-input-field field-name="Locations__c"  onchange={handleLocChange} value={strLoc}></lightning-input-field>
+<lightning-input-field field-name="Buildings__c" onchange={handleBuildingChange} value={strBuild}></lightning-input-field>
+<lightning-input-field field-name="Block__c" onchange={handleBlockChange} value={strBlock}></lightning-input-field>
+<lightning-input-field field-name="Facings__c" onchange={handleFacingChange} value={strFacing}></lightning-input-field>
+<lightning-input-field field-name="Floors__c" onchange={handleFloorChange} value={strFloor}></lightning-input-field>
+
+            <lightning-button variant="neutral" label="Cancel"></lightning-button>
+            <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="submit"></lightning-button>
+            <lightning-button class="slds-m-left_x-small" label="Next page" onclick={navigateNextPage}></lightning-button>
+        </lightning-record-edit-form>
+    </lightning-quick-action-panel>
+   
+</template>
