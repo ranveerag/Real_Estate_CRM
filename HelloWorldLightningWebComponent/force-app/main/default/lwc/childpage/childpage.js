@@ -3,13 +3,17 @@ import { CloseActionScreenEvent } from 'lightning/actions';
 import { NavigationMixin } from 'lightning/navigation';
 import getflatdetails from '@salesforce/apex/controller.getflatdetails';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { createRecord } from 'lightning/uiRecordApi';
+import getRentId from '@salesforce/apex/controllerRent.getRentId';
+import createRentRecord from '@salesforce/apex/controllerRent.createRentRecord';
+
 
 
 
 
 
 export default class Childpage extends NavigationMixin(LightningElement) {
+
+
     @api Location;
     @api Building;
     @api Block;
@@ -17,8 +21,8 @@ export default class Childpage extends NavigationMixin(LightningElement) {
     @api Floor;
     @api recordId;
     @wire(getflatdetails, {location: '$Location', building: '$Building', block: '$Block', facing: '$Facing', floor: '$Floor'}) wiredProduct2;
+    @wire(getRentId, { optId: '$recordId' }) wiredRecordId;
 
-    
     @track selectedCheckboxes = [];
     @track showValidationError = false;
     @track showMergeValidationError = false;
@@ -94,12 +98,9 @@ export default class Childpage extends NavigationMixin(LightningElement) {
         if(this.selectedCheckboxes.length == 2){
             
             console.log(this.selection1AdjFlat,this.selection1,this.selection2AdjFlat,this.selection2);
-
             
             if(this.selection1AdjFlat===this.selection2 && this.selection2AdjFlat===this.selection1){
-                
-            
-                console.log("if");
+                // console.log("if");
                 let cmpDef = {
                 componentDef: "c:leasePage",
                 };
@@ -129,27 +130,35 @@ export default class Childpage extends NavigationMixin(LightningElement) {
       }
     }
 
-    handlenextPage(e) {
+    async handlenextPage(e) {
         if(this.selectedCheckboxes.length >= 0){
-            console.log("sdf", this.recordId);
-
-            let fields = {
-                Opportunity_Name__c: this.recordId // Assuming this is the lookup field to Opportunity in Rent__c
-            };
-        
-            let rentRecordInput = { apiName: 'Rent__c', fields };
-            
-            createRecord(rentRecordInput)
-                .then(rentRecord => {
-                    console.log('Rent record created:', rentRecord.id);
-        
+            if (this.wiredRecordId.data && this.wiredRecordId.data.length > 0) {
+                const existingRentRecordId = this.wiredRecordId.data[0].Id;
+                console.log('Existing Rent Record Id:', existingRentRecordId);
+                let cmpDef = {
+                    componentDef: 'c:leasePage',
+                    attributes: {
+                        optRecordId: this.recordId
+                    }
+                };
+                let encodedDef = btoa(JSON.stringify(cmpDef));
+                this[NavigationMixin.Navigate]({
+                    type: 'standard__webPage',
+                    attributes: {
+                        url: '/one/one.app#' + encodedDef
+                    }
+                });
+            } else {
+                // Create a new record in Rent__c object
+                try {
+                    await createRentRecord({ opportunityId: this.recordId });
+                    // Proceed with navigation
                     let cmpDef = {
                         componentDef: 'c:leasePage',
                         attributes: {
                             optRecordId: this.recordId
                         }
                     };
-                    
                     let encodedDef = btoa(JSON.stringify(cmpDef));
                     this[NavigationMixin.Navigate]({
                         type: 'standard__webPage',
@@ -157,11 +166,12 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                             url: '/one/one.app#' + encodedDef
                         }
                     });
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Error creating Rent record:', error);
-                });
+                }
+            }
+        }}
+        handlePreButton(){
+            window.history.go(-1);
         }
-    }
-
 }

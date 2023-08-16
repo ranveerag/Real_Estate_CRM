@@ -1,15 +1,26 @@
 <!-- sldsValidatorIgnore -->
 <template>
+    <template if:true={isRecordIdLoaded}>
+
     <lightning-quick-action-panel header="Lease/Rent Details">
         <lightning-record-edit-form record-id={recordId} object-api-name="Rent__c" onsuccess={handleSuccess}>
 
         <lightning-input-field field-name="Booking_type__c"  onchange={handleBooking} value={strBook}></lightning-input-field>
+        <lightning-input-field field-name="Lease_Duration_Purchase_mode__c"  onchange={handleDuration} value={strDura}></lightning-input-field>
+        <lightning-input-field field-name="Start_Date__c"  onchange={handleStartDate} value={strDate}></lightning-input-field>
+        <lightning-input-field field-name="End_Date__c"  onchange={handleEndDate} value={strEndDate}></lightning-input-field>
+
+
+
+
 
         
 
         <lightning-button variant="neutral" label="Cancel"></lightning-button>
-        <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="button" onclick={checkrecord}></lightning-button>
+        <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="submit"></lightning-button>
+        <lightning-button label="prevoius" onclick={handleGoBack}></lightning-button>
         </lightning-record-edit-form>
+        
     </lightning-quick-action-panel>
-
+    </template>
 </template>
