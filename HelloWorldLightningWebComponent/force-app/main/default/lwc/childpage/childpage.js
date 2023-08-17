@@ -5,6 +5,8 @@ import getflatdetails from '@salesforce/apex/controller.getflatdetails';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRentId from '@salesforce/apex/controllerRent.getRentId';
 import createRentRecord from '@salesforce/apex/controllerRent.createRentRecord';
+import createOpportunityLineItem from '@salesforce/apex/controllerRent.createOpportunityLineItem';
+
 
 
 
@@ -170,6 +172,14 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                     console.error('Error creating Rent record:', error);
                 }
             }
+            //await createOpportunityLineItem({ opportunityId: this.recordId, quantity: 1 });
+            const newRentId = await createRentRecord({ opportunityId: this.recordId });
+                    await createOpportunityLineItem({
+                        opportunityId: this.recordId,
+                        quantity: 1,
+                        productId: this.selectedCheckboxes[0] // Pass the correct product ID here
+                    });
+
         }}
         handlePreButton(){
             window.history.go(-1);

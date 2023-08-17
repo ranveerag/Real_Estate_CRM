@@ -14,7 +14,7 @@ strFacing;
 strFloor;
 
    navigateNextPage() {
-    console.log()
+    console.log(this.strLoc);
     let cmpDef = {
       componentDef: "c:childpage",
         attributes: {

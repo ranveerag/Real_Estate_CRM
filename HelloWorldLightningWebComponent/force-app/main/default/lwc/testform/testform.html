@@ -7,7 +7,7 @@
             <lightning-output-field field-name="Name"></lightning-output-field>
             <lightning-input-field field-name="StageName" ></lightning-input-field>
 
-<lightning-input-field field-name="Locations__c"  onchange={handleLocChange} value={strLoc}></lightning-input-field>
+<lightning-input-field field-name="Locations__c"  onchange={handleLocChange} value={strLoc} default={strLoc}></lightning-input-field>
 <lightning-input-field field-name="Buildings__c" onchange={handleBuildingChange} value={strBuild}></lightning-input-field>
 <lightning-input-field field-name="Block__c" onchange={handleBlockChange} value={strBlock}></lightning-input-field>
 <lightning-input-field field-name="Facings__c" onchange={handleFacingChange} value={strFacing}></lightning-input-field>

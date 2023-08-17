@@ -9,5 +9,21 @@ public class controllerRent {
         Rent__c newRent = new Rent__c(Opportunity_Name__c = opportunityId);
         insert newRent;
     }
+
+    @AuraEnabled
+    public static void createOpportunityLineItem(Id opportunityId, Integer quantity, Id productId) {
+        PricebookEntry pricebookEntry = [SELECT Id, UnitPrice FROM PricebookEntry WHERE Product2Id = :productId AND Pricebook2.IsStandard = true LIMIT 1];
+    
+        OpportunityLineItem newLineItem = new OpportunityLineItem(
+            OpportunityId = opportunityId,
+            Quantity = quantity,
+            Product2Id = productId,
+            PricebookEntryId = pricebookEntry.Id,
+            TotalPrice = quantity * pricebookEntry.UnitPrice
+        );
+//System.debug('optID:' + opportunityId + 'productId: ' + productId + 'quant:' + quantity);
+        insert newLineItem;
+       // System.debug(newLineItem);
+    }
   
 }
