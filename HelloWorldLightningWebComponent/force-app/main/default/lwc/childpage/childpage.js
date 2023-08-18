@@ -96,7 +96,7 @@ export default class Childpage extends NavigationMixin(LightningElement) {
         });
     }
 
-    handleNextPage(e) {
+    async handleNextPage(e) {
         if(this.selectedCheckboxes.length == 2){
             
             console.log(this.selection1AdjFlat,this.selection1,this.selection2AdjFlat,this.selection2);
@@ -104,9 +104,11 @@ export default class Childpage extends NavigationMixin(LightningElement) {
             if(this.selection1AdjFlat===this.selection2 && this.selection2AdjFlat===this.selection1){
                 // console.log("if");
                 let cmpDef = {
-                componentDef: "c:leasePage",
+                    componentDef: 'c:leasePage',
+                    attributes: {
+                        optRecordId: this.recordId
+                    }
                 };
-            
                 let encodedDef = btoa(JSON.stringify(cmpDef));
                 this[NavigationMixin.Navigate]({
                 type: "standard__webPage",
@@ -114,6 +116,18 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                     url: "/one/one.app#" + encodedDef
                 }
                 });
+                    await createOpportunityLineItem({
+                        opportunityId: this.recordId,
+                        quantity: 1,
+                        productId: this.selectedCheckboxes[0],
+                        mergeFlag: true // Pass the correct product ID here
+                    });
+                    await createOpportunityLineItem({
+                        opportunityId: this.recordId,
+                        quantity: 1,
+                        productId: this.selectedCheckboxes[1],
+                        mergeFlag: true // Pass the correct product ID here
+                    });
             }
             else
             {
@@ -173,11 +187,12 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                 }
             }
             //await createOpportunityLineItem({ opportunityId: this.recordId, quantity: 1 });
-            const newRentId = await createRentRecord({ opportunityId: this.recordId });
+            //const newRentId = await createRentRecord({ opportunityId: this.recordId });
                     await createOpportunityLineItem({
                         opportunityId: this.recordId,
                         quantity: 1,
-                        productId: this.selectedCheckboxes[0] // Pass the correct product ID here
+                        productId: this.selectedCheckboxes[0],
+                        mergeFlag: false // Pass the correct product ID here
                     });
 
         }}
