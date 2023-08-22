@@ -13,9 +13,11 @@
 <lightning-input-field field-name="Facings__c" onchange={handleFacingChange} value={strFacing}></lightning-input-field>
 <lightning-input-field field-name="Floors__c" onchange={handleFloorChange} value={strFloor}></lightning-input-field>
 
-            <lightning-button variant="neutral" label="Cancel"></lightning-button>
-            <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="submit"></lightning-button>
-            <lightning-button class="slds-m-left_x-small" label="Next page" onclick={navigateNextPage}></lightning-button>
+            <div class="button-group">
+            <lightning-button variant="destructive" label="Cancel" class="button-group"></lightning-button>
+            <lightning-button variant="brand" class="slds-m-left_x-small custom-button" label="Save" type="submit"></lightning-button>
+            <lightning-button variant="brand" class="slds-m-left_x-small custom-button" label="Next page" onclick={navigateNextPage}></lightning-button>
+            </div>
         </lightning-record-edit-form>
     </lightning-quick-action-panel>
    

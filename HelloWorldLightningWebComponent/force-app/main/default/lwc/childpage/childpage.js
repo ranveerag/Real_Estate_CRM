@@ -6,6 +6,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRentId from '@salesforce/apex/controllerRent.getRentId';
 import createRentRecord from '@salesforce/apex/controllerRent.createRentRecord';
 import createOpportunityLineItem from '@salesforce/apex/controllerRent.createOpportunityLineItem';
+import getDurationOfLease from '@salesforce/apex/controllerRent.getDurationOfLease';
 
 
 
@@ -28,6 +29,8 @@ export default class Childpage extends NavigationMixin(LightningElement) {
     @track selectedCheckboxes = [];
     @track showValidationError = false;
     @track showMergeValidationError = false;
+    @track leaseDuration;
+
 
 
     selection1AdjFlat=" ";
@@ -95,18 +98,29 @@ export default class Childpage extends NavigationMixin(LightningElement) {
             }
         });
     }
+    @wire(getDurationOfLease, { optId: '$recordId' })
+    wiredLeaseDuration({ error, data }) {
+        if (data) {
+            this.leaseDuration = data;
+        } else if (error) {
+            // Handle error if needed
+            console.error(error);
+        }
+    }
+    
 
     async handleNextPage(e) {
         if(this.selectedCheckboxes.length == 2){
             
-            console.log(this.selection1AdjFlat,this.selection1,this.selection2AdjFlat,this.selection2);
+            //console.log(this.selection1AdjFlat,this.selection1,this.selection2AdjFlat,this.selection2);
             
             if(this.selection1AdjFlat===this.selection2 && this.selection2AdjFlat===this.selection1){
                 // console.log("if");
                 let cmpDef = {
                     componentDef: 'c:leasePage',
                     attributes: {
-                        optRecordId: this.recordId
+                        optRecordId: this.recordId,
+                        strDura: this.leaseDuration
                     }
                 };
                 let encodedDef = btoa(JSON.stringify(cmpDef));
@@ -141,20 +155,21 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                 console.log("validation error");
             }
       }
-      else{
-        this.showMergeValidationError =false;
-      }
+    //   else{
+    //     this.showMergeValidationError =false;
+    //   }
     }
 
     async handlenextPage(e) {
         if(this.selectedCheckboxes.length >= 0){
-            if (this.wiredRecordId.data && this.wiredRecordId.data.length > 0) {
-                const existingRentRecordId = this.wiredRecordId.data[0].Id;
-                console.log('Existing Rent Record Id:', existingRentRecordId);
+            // if (this.wiredRecordId.data && this.wiredRecordId.data.length > 0) {
+            //     const existingRentRecordId = this.wiredRecordId.data[0].Id;
+                 console.log('Existing Rent Record Id:', this.leaseDuration);
                 let cmpDef = {
                     componentDef: 'c:leasePage',
                     attributes: {
-                        optRecordId: this.recordId
+                        optRecordId: this.recordId,
+                        strDura: this.leaseDuration
                     }
                 };
                 let encodedDef = btoa(JSON.stringify(cmpDef));
@@ -164,30 +179,30 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                         url: '/one/one.app#' + encodedDef
                     }
                 });
-            } else {
-                // Create a new record in Rent__c object
-                try {
-                    await createRentRecord({ opportunityId: this.recordId });
-                    // Proceed with navigation
-                    let cmpDef = {
-                        componentDef: 'c:leasePage',
-                        attributes: {
-                            optRecordId: this.recordId
-                        }
-                    };
-                    let encodedDef = btoa(JSON.stringify(cmpDef));
-                    this[NavigationMixin.Navigate]({
-                        type: 'standard__webPage',
-                        attributes: {
-                            url: '/one/one.app#' + encodedDef
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error creating Rent record:', error);
-                }
-            }
-            //await createOpportunityLineItem({ opportunityId: this.recordId, quantity: 1 });
-            //const newRentId = await createRentRecord({ opportunityId: this.recordId });
+            // } else {
+            //     // Create a new record in Rent__c object
+            //     try {
+            //         await createRentRecord({ opportunityId: this.recordId });
+            //         // Proceed with navigation
+            //         let cmpDef = {
+            //             componentDef: 'c:leasePage',
+            //             attributes: {
+            //                 optRecordId: this.recordId
+            //             }
+            //         };
+            //         let encodedDef = btoa(JSON.stringify(cmpDef));
+            //         this[NavigationMixin.Navigate]({
+            //             type: 'standard__webPage',
+            //             attributes: {
+            //                 url: '/one/one.app#' + encodedDef
+            //             }
+            //         });
+            //     } catch (error) {
+            //         console.error('Error creating Rent record:', error);
+            //     }
+            // }
+            // //await createOpportunityLineItem({ opportunityId: this.recordId, quantity: 1 });
+            // //const newRentId = await createRentRecord({ opportunityId: this.recordId });
                     await createOpportunityLineItem({
                         opportunityId: this.recordId,
                         quantity: 1,

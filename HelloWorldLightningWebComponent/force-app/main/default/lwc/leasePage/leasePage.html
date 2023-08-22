@@ -1,12 +1,11 @@
 <!-- sldsValidatorIgnore -->
 <template>
-    <template if:true={isRecordIdLoaded}>
 
     <lightning-quick-action-panel header="Lease/Rent Details">
-        <lightning-record-edit-form record-id={recordId} object-api-name="Rent__c" onsuccess={handleSuccess}>
+        <lightning-record-edit-form record-id={optRecordId} object-api-name="Opportunity" onsuccess={handleSuccess}>
 
-        <lightning-input-field field-name="Booking_type__c"  onchange={handleBooking} value={strBook}></lightning-input-field>
-        <lightning-input-field field-name="Lease_Duration_Purchase_mode__c"  onchange={handleDuration} value={strDura}></lightning-input-field>
+        <lightning-input-field field-name="Booking_Type__c"  onchange={handleBooking} value={strBook}></lightning-input-field>
+        <lightning-input-field field-name="Lease_Duration_Purchase_Mode__c"  onchange={handleDuration} value={strDura}></lightning-input-field>
         <lightning-input-field field-name="Start_Date__c"  onchange={handleStartDate} value={strDate} ></lightning-input-field>
         <lightning-input-field field-name="End_Date__c"  onchange={handleEndDate} value={strEndDate} disabled={isRecordIdLoaded}></lightning-input-field>
 
@@ -15,14 +14,8 @@
 
 
         
-
-        <lightning-button variant="neutral" label="Cancel"></lightning-button>
-        <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="submit"></lightning-button>
-        <lightning-button label="prevoius" onclick={handleGoBack}></lightning-button>
-        </lightning-record-edit-form>
+        <template if:true={strDura}>
         
-    </lightning-quick-action-panel>
-    
 
     <div class="slds-box">
         <table class="slds-table slds-table_bordered slds-table_cell-buffer">
@@ -46,9 +39,9 @@
                 <template for:each={staticRows} for:item="row">
                     <tr key={row.key}>
                         <td data-label="Year">{row.year}</td>
-                        <td data-label="Initail Value"><lightning-input type="input" class="Initvalue" value={initailVal} onchange={handleInitailValue} data-idx={row.key}></lightning-input></td>
-                        <td data-label="Percentage Increase"><lightning-input type="input" class="Percentvalue" value={percentVal} onchange={handleInitailValue}  data-idx={row.key} disabled={row.disabled}></lightning-input></td>
-                        <td data-label="Sub total"><lightning-input type="input" class= "answerC" value={answerVal} data-idx={row.key} disabled={isRecordIdLoaded}></lightning-input></td>
+                        <td data-label="Initail Value"><lightning-input type="input" class="Initvalue" value={row.Initail} onchange={handleInitailValue} data-idx={row.key}></lightning-input></td>
+                        <td data-label="Percentage Increase"><lightning-input type="input" class="Percentvalue" value={row.Percent} onchange={handleInitailValue}  data-idx={row.key} disabled={row.disabled}></lightning-input></td>
+                        <td data-label="Sub total"><lightning-input type="input" class= "answerC" value={row.Answer} data-idx={row.key} disabled={isRecordIdLoaded}></lightning-input></td>
 
                     </tr>
                 </template>
@@ -56,6 +49,17 @@
             </tbody>
             </table>
             </div>
-            </template>
+
+        </template>
+
+            <lightning-button variant="brand" label="Prevoius" onclick={handleGoBack}></lightning-button>
+
+        <lightning-button variant="destructive" class="slds-m-left_x-small" label="Cancel"></lightning-button>
+        <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="submit" onclick={saveDataToSalesforce}></lightning-button>
+        </lightning-record-edit-form>
+        
+    </lightning-quick-action-panel>
+    
+            
 
 </template>

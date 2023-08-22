@@ -62,10 +62,10 @@
             </tbody>
         </table>
     </div>
-    <lightning-button variant="neutral" label="Prevoius" onclick={handlePreButton}></lightning-button>
-    <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+    <lightning-button variant="brand" class="slds-m-left_x-small" label="Prevoius" onclick={handlePreButton}></lightning-button>
+    <lightning-button variant="destructive" class="slds-m-left_x-small" label="Cancel" onclick={handleCancel}></lightning-button>
     
-    <lightning-button label="Merge" variant="brand" onclick={handleNextPage} disabled={isButtonDisabled} ></lightning-button><lightning-helptext content="Seelct  atleast 2 flats to merge"></lightning-helptext>
-    <lightning-button label="Next" variant="brand" onclick={handlenextPage}></lightning-button><lightning-helptext content="Seelct  atleast 1 flats to merge"></lightning-helptext>
+    <lightning-button label="Merge" variant="brand" class="slds-m-left_x-small" onclick={handleNextPage} disabled={isButtonDisabled} ></lightning-button><lightning-helptext content="Seelct  atleast 2 flats to merge"></lightning-helptext>
+    <lightning-button label="Next" variant="brand" class="slds-m-left_x-small" onclick={handlenextPage}></lightning-button><lightning-helptext content="Seelct  atleast 1 flats to merge"></lightning-helptext>
 
 </template>
