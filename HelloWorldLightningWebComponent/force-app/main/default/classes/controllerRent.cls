@@ -41,7 +41,7 @@ public class controllerRent {
     }
     @AuraEnabled(cacheable=true)
     public static List<Rent__c> getRentList(String optId) {
-        return [select Initial_Price__c, percent_increase__c, Sub_Value__c,Year__c from Rent__c   WHERE Opportunity_Name__c = :optId order by Year__c];
+        return [select Initial_Price__c, percent_increase__c, Sub_Value__c,Year__c,Rupees_Increase__c from Rent__c   WHERE Opportunity_Name__c = :optId order by Year__c];
     }
     
   }

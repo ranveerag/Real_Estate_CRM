@@ -31,6 +31,9 @@
                         <div class="slds-truncate" title="Initail Percentage increase">Percent increase</div>
                     </th>
                     <th scope="col">
+                        <div class="slds-truncate" title="Initail Rupee Increase">Rupee Increase</div>
+                    </th>
+                    <th scope="col">
                         <div class="slds-truncate" title="Subtotal">Subtotal</div>
                     </th>
                 </tr>
@@ -39,9 +42,11 @@
                 <template for:each={staticRows} for:item="row">
                     <tr key={row.key}>
                         <td data-label="Year">{row.year}</td>
-                        <td data-label="Initail Value"><lightning-input type="input" class="Initvalue" value={row.Initail} onchange={handleInitailValue} data-idx={row.key}></lightning-input></td>
-                        <td data-label="Percentage Increase"><lightning-input type="input" class="Percentvalue" value={row.Percent} onchange={handleInitailValue}  data-idx={row.key} disabled={row.disabled}></lightning-input></td>
-                        <td data-label="Sub total"><lightning-input type="input" class= "answerC" value={row.Answer} data-idx={row.key} disabled={isRecordIdLoaded}></lightning-input></td>
+                        <td data-label="Initail Value"><lightning-input type="number" class="Initvalue" value={row.Initail} onchange={handleInitailValue} data-idx={row.key}></lightning-input></td>
+                        <td data-label="Percentage Increase"><lightning-input type="number" class="Percentvalue" value={row.Percent} min="0" max="100" step="0.01" onchange={handleInitailValue} data-idx={row.key} disabled={row.disabled}></lightning-input></td>
+                        <td data-label="Rupees Increase"><lightning-input type="number" class="RupeeValue" value={row.Rupee} min="0" max="10000" step="0" data-idx={row.key} onchange={handleInitailValue} disabled={row.disabled}></lightning-input></td>
+
+                        <td data-label="Sub total"><lightning-input type="text" class= "answerC" value={row.Answer} data-idx={row.key} disabled={isRecordIdLoaded}></lightning-input></td>
 
                     </tr>
                 </template>
@@ -51,7 +56,7 @@
             </div>
 
         </template>
-
+        
             <lightning-button variant="brand" label="Prevoius" onclick={handleGoBack}></lightning-button>
 
         <lightning-button variant="destructive" class="slds-m-left_x-small" label="Cancel"></lightning-button>

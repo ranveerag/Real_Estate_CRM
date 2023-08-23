@@ -1,0 +1,11 @@
+.button-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem; /* Add padding for spacing */
+    background-color: white; /* If needed, adjust the background color */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow to separate from the content */
+}

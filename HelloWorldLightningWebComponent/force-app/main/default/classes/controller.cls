@@ -23,4 +23,10 @@ public with sharing class controller {
 
 
 }
+
+@AuraEnabled(cacheable=true)
+    public static List<Opportunity> fetchOptDetails(String optId) {
+        return [select Locations__c, Buildings__c, Block__c, Facings__c, Floors__c from Opportunity where Id= :optId];
+}
+
 }

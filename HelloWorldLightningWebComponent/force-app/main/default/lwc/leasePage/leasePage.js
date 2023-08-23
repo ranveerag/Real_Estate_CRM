@@ -15,6 +15,7 @@ export default class LeasePage extends LightningElement {
     @track initValueArr = [];
     @track percentValueArr = [];
     @track answerValueArr = [];
+    @track rupeeValueArr =[];
     @track yearArr =[];
     isRecordIdLoaded=true;
 
@@ -23,6 +24,7 @@ export default class LeasePage extends LightningElement {
     answer;
     year;
     Index;
+    rupee;
     
 
     @api optRecordId;
@@ -40,7 +42,9 @@ export default class LeasePage extends LightningElement {
             this.initValueArr.push(data[i].Initial_Price__c);
             this.percentValueArr.push(data[i].percent_increase__c);
             this.answerValueArr.push(data[i].Sub_Value__c);
+            this.rupeeValueArr.push(data[i].Rupees_Increase__c);
             this.yearArr.push(data[i].Year__c);
+            
         }
     } else if(error) {
         console.log("errror");
@@ -58,7 +62,7 @@ export default class LeasePage extends LightningElement {
 @track strDate;
 @track strEndDate;
 @api strDura;
-startYear = 0;
+startYear = 2023;
 
 
 
@@ -81,6 +85,7 @@ get staticRows() {
             year: yearValue, 
             Initail: this.initValueArr[i],
             Percent: this.percentValueArr[i],
+            Rupee: this.rupeeValueArr[i],
             Answer: this.answerValueArr[i],
             disabled: isDisabled
             
@@ -151,6 +156,7 @@ saveDataToSalesforce() {
     this.initValueArr = [];
     this.percentValueArr = [];
     this.answerValueArr = [];
+    this.rupeeValueArr =[];
     this.yearArr =[];
     this.strDura = event.target.value;
     console.log(this.strDura);
@@ -185,18 +191,27 @@ handleInitailValue(event){
     this.Index= Number(event?.currentTarget?.dataset.idx);
     const InitValue =Number(this.template.querySelectorAll('.Initvalue')[this.Index].value);
     const PercentValue = Number(this.template.querySelectorAll('.Percentvalue')[this.Index].value);
+    const RupeeValue = Number(this.template.querySelectorAll('.RupeeValue')[this.Index].value);
+    if(PercentValue){
     this.template.querySelectorAll('.answerC')[this.Index].value =((InitValue * PercentValue) /100) +InitValue;
+    }
+    if(RupeeValue){
+    this.template.querySelectorAll('.answerC')[this.Index].value =(InitValue + RupeeValue);
+    }
     this.initValueArr[this.Index] = InitValue;
     this.percentValueArr[this.Index] = PercentValue;
+    this.rupeeValueArr[this.Index] = RupeeValue;
     //console.log(this.row.initail);
     //console.log("getter ",this.Index,InitValue);
-    console.log("getter ",this.initValueArr[0],this.initValueArr[1],this.percentValueArr[1],this.percentValueArr[2]);
+    //console.log("getter ",this.initValueArr[0],this.initValueArr[1],this.percentValueArr[1],this.percentValueArr[2]);
+
+  
+
 
 }
-
-
-
-
-
+handleRupee(event)
+{
+    this.rupee = event.target.value;
+}
 
 }
