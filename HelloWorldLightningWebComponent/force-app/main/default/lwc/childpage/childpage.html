@@ -1,9 +1,7 @@
 <template>
 
     <div class="slds-box">
-        <div if:true={showValidationError} class="slds-text-align_center slds-text-color_error" style="background-color: #f7f3f3; padding: 10px;">Please select only two flats.</div>
-    <div if:true={showMergeValidationError} class="slds-text-align_center slds-text-color_error" style="background-color: #eae6e6; padding: 10px;">Select only Adjacent Flat.</div>
-
+  
         <table class="slds-table slds-table_bordered slds-table_cell-buffer">
             <thead>
                 <tr class="slds-text-title_caps">
@@ -66,6 +64,6 @@
     <lightning-button variant="destructive" class="slds-m-left_x-small" label="Cancel" onclick={handleCancel}></lightning-button>
     
     <lightning-button label="Merge" variant="brand" class="slds-m-left_x-small" onclick={handleNextPage} disabled={isButtonDisabled} ></lightning-button><lightning-helptext content="Seelct  atleast 2 flats to merge"></lightning-helptext>
-    <lightning-button label="Next" variant="brand" class="slds-m-left_x-small" onclick={handlenextPage}></lightning-button><lightning-helptext content="Seelct  atleast 1 flats to merge"></lightning-helptext>
+    <lightning-button label="Next" variant="brand" class="slds-m-left_x-small" onclick={handlenextPage}></lightning-button><lightning-helptext content="Seelct 1 flat to Book"></lightning-helptext>
 
 </template>

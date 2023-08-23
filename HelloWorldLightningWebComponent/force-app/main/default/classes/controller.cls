@@ -4,7 +4,7 @@ public with sharing class controller {
         // System.debug('Location: ' + location);
         String debugAdj;
         List<Product2> products = [SELECT ProductCode, Locations__c, Building__c, Block__c, Facing__c, Floor__c, 
-        Adjacent_Flat_Number__c	, Adjacent_Flat__c
+        Adjacent_Flat_Number__c	, Adjacent_Flat__c,Sqrt__c
             FROM Product2 
             WHERE Locations__c = :location
             AND Building__c = :building

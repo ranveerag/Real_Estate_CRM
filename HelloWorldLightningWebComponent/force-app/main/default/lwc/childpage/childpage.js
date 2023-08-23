@@ -3,8 +3,8 @@ import { CloseActionScreenEvent } from 'lightning/actions';
 import { NavigationMixin } from 'lightning/navigation';
 import getflatdetails from '@salesforce/apex/controller.getflatdetails';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import getRentId from '@salesforce/apex/controllerRent.getRentId';
-import createRentRecord from '@salesforce/apex/controllerRent.createRentRecord';
+//import getRentId from '@salesforce/apex/controllerRent.getRentId';
+//import createRentRecord from '@salesforce/apex/controllerRent.createRentRecord';
 import createOpportunityLineItem from '@salesforce/apex/controllerRent.createOpportunityLineItem';
 import getDurationOfLease from '@salesforce/apex/controllerRent.getDurationOfLease';
 
@@ -24,11 +24,9 @@ export default class Childpage extends NavigationMixin(LightningElement) {
     @api Floor;
     @api recordId;
     @wire(getflatdetails, {location: '$Location', building: '$Building', block: '$Block', facing: '$Facing', floor: '$Floor'}) wiredProduct2;
-    @wire(getRentId, { optId: '$recordId' }) wiredRecordId;
+    //@wire(getRentId, { optId: '$recordId' }) wiredRecordId;
 
     @track selectedCheckboxes = [];
-    @track showValidationError = false;
-    @track showMergeValidationError = false;
     @track leaseDuration;
 
 
@@ -48,7 +46,6 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                 this.selectedCheckboxes.push(checkboxValue);
             } else {
                 event.target.checked = false; // Uncheck the checkbox
-                this.showValidationError = true;
                 const toastEvent = new ShowToastEvent({
                     title: 'Error',
                     message: 'You can only select up to two checkboxes.',
@@ -58,7 +55,6 @@ export default class Childpage extends NavigationMixin(LightningElement) {
             }
         } else {
             this.selectedCheckboxes = this.selectedCheckboxes.filter(value => value !== checkboxValue);
-            this.showValidationError = false;
 
         }
         if(this.selectedCheckboxes.length === 2){
@@ -145,7 +141,6 @@ export default class Childpage extends NavigationMixin(LightningElement) {
             }
             else
             {
-                this.showMergeValidationError =true;
                 const toastEvent2 = new ShowToastEvent({
                     title: 'Error',
                     message: 'Selected only adjacent flats',
@@ -161,7 +156,7 @@ export default class Childpage extends NavigationMixin(LightningElement) {
     }
 
     async handlenextPage(e) {
-        if(this.selectedCheckboxes.length >= 0){
+        if(this.selectedCheckboxes.length == 1){
             // if (this.wiredRecordId.data && this.wiredRecordId.data.length > 0) {
             //     const existingRentRecordId = this.wiredRecordId.data[0].Id;
                  console.log('Existing Rent Record Id:', this.leaseDuration);
@@ -210,7 +205,29 @@ export default class Childpage extends NavigationMixin(LightningElement) {
                         mergeFlag: false // Pass the correct product ID here
                     });
 
-        }}
+        }
+        else if(this.selectedCheckboxes.length < 1)
+            {
+                const toastEvent3 = new ShowToastEvent({
+                    title: 'Error',
+                    message: 'Select atleast one Flat to continue',
+                    variant: 'error',
+                });
+                this.dispatchEvent(toastEvent3);
+                console.log("validation error");
+            }
+            else
+            {
+                const toastEvent4 = new ShowToastEvent({
+                    title: 'Error',
+                    message: 'Select only one Flat at a time',
+                    variant: 'error',
+                });
+                this.dispatchEvent(toastEvent4);
+                console.log("validation error");
+            }
+
+    }
         handlePreButton(){
             window.history.go(-1);
         }
